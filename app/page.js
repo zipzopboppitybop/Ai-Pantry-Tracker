@@ -1,7 +1,5 @@
+"use client";
 import Image from "next/image";
-import { useState } from "react";
-const [itemName, setitemName] = useState("");
-const [itemQuantity, setitemQuantity] = useState(0);
 
 const items = [
   {name: "Milk", quantity: 1},

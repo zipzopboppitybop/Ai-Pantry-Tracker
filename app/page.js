@@ -4,7 +4,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPen, faPenToSquare, faTrash, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {  faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 
 

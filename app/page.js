@@ -1,8 +1,16 @@
 "use client";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faPen, faPenToSquare, faTrash, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+
+
 
 const items = [
   {name: "Milk", quantity: 1},
+  {name: "Bread", quantity: 2},
 ];
 
 export default function Home() {
@@ -26,9 +34,15 @@ export default function Home() {
             {items.map((item, id) => (
               <ul>
                 <li key={id} className="pb-2 px-5 text-lg">
-                  <div>
-                    <span>{item.name}</span>
-                    <span>{item.quantity}</span>
+                  <div className="bg-slate-950 rounded-lg grid grid-cols-6 grid-rows-0 gap-4 p-3">
+                    <span className="col-span-3">{item.name}</span>
+                    <span className="col-start-4">{item.quantity}</span>
+                    <button className="bg-green-500 rounded-lg text-white col-start-5">
+                      <FontAwesomeIcon icon={faPenToSquare} className="fas fa-pen-to=square"></FontAwesomeIcon>
+                    </button>
+                    <button className="bg-red-500 rounded-lg text-white col-start-6">
+                      <FontAwesomeIcon icon={faTrashCan} className="fas fa-trash-can"></FontAwesomeIcon>
+                    </button>
                   </div>
                 </li>
               </ul>

@@ -6,7 +6,7 @@ config.autoAddCss = false;
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { collection, addDoc, getDocs, QuerySnapshot, query, onSnapshot } from "firebase/firestore"; 
+import { collection, addDoc, getDocs, doc, deleteDoc, QuerySnapshot, query, onSnapshot } from "firebase/firestore"; 
 import { db } from "./firebase";
 
 export default function Home() {
@@ -39,6 +39,11 @@ export default function Home() {
     await addDoc(collection(db, "items"), item);
 
     setNewItem({ name: "", quantity: "" });
+  }
+
+  // delete item from database
+  const deleteItem = async (id) => {
+    await deleteDoc(doc(db, "items", id));
   }
 
   return (
@@ -75,7 +80,10 @@ export default function Home() {
                     <button className="bg-green-500 rounded-lg text-white col-start-5">
                       <FontAwesomeIcon icon={faPenToSquare} className="fas fa-pen-to=square"></FontAwesomeIcon>
                     </button>
-                    <button className="bg-red-500 rounded-lg text-white col-start-6">
+                    <button 
+                    className="bg-red-500 rounded-lg text-white col-start-6"
+                    onClick={() => deleteItem(item.id)}
+                    >
                       <FontAwesomeIcon icon={faTrashCan} className="fas fa-trash-can"></FontAwesomeIcon>
                     </button>
                   </div>

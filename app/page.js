@@ -14,11 +14,13 @@ export default function Home() {
 
   useEffect(() => {
     const q = query(collection(db, "items"));
+
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const itemsArr = [];
       querySnapshot.forEach((doc) => {
         itemsArr.push({ ...doc.data(), id: doc.id });
       });
+      
       setItems(itemsArr);
     });
   }, []);

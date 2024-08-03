@@ -7,9 +7,10 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { collection, addDoc } from "firebase/firestore"; 
+import { db } from "./firebase";
 
 export default function Home() {
-  const [items,] = useState([
+  const [items, setItems] = useState([
     { name: "Apples", quantity: "5" },
     { name: "Oranges", quantity: "3" },
     { name: "Bananas", quantity: "2" },
@@ -19,17 +20,20 @@ export default function Home() {
   
   const [newItem, setNewItem] = useState({ name: "", quantity: "" });
   
-  // // add item to database
-  // const addItem = async (e) => {
-  //   e.preventDefault();
-  //   const form = e.target;
-  //   const item = {
-  //     name: form.itemName.value,
-  //     quantity: form.itemQuantity.value,
-  //   };
-  //   await addDoc(collection(db, "items"), item);
-  //   form.reset();
-  // }
+  // add item to database
+  const addItem = async (e) => {
+    e.preventDefault();
+    if (!newItem.name || !newItem.quantity) return;
+
+    const item = {
+      name: newItem.name.trim(),
+      quantity: newItem.quantity.trim(),
+    };
+
+    await addDoc(collection(db, "items"), item);
+
+    setNewItem({ name: "", quantity: "" });
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-xl w-full items-center justify-between font-mono text-sm ">
@@ -37,15 +41,22 @@ export default function Home() {
         <div className="bg-gray-800 items-center rounded-lg mt-6 min-h-fit ">
           <form className="grid grid-cols-5 grid-rows-1 gap-4 p-5 m-0">
             <input 
-            className="col-span-2 h-10 font-bold rounded-lg p-3" 
+            className="col-span-2 h-10 font-bold rounded-lg p-3 text-black" 
             placeholder="Item Name"
-            
+            value={newItem.name}
+            onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
             />
             <input 
-            className="col-span-2 col-start-3 font-bold rounded-lg  h-10 p-3"
+            className="col-span-2 col-start-3 font-bold rounded-lg text-black h-10 p-3"
             placeholder="Quantity" 
+            value={newItem.quantity}
+            onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
             />
-            <button className="col-start-5 bg-slate-950 rounded-lg  h-11 text-2xl p-1">+</button>
+            <button 
+            onClick={addItem}
+            className="col-start-5 bg-slate-950 rounded-lg  h-11 text-2xl p-1">
+              +
+            </button>
           </form>
           <div className="my-0 ">
             {items.map((item, id) => (

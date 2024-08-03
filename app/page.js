@@ -4,7 +4,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 import Image from "next/image";
-import { collection, addDoc, query, onSnapshot } from "firebase/firestore"; 
+import { collection, addDoc, query, onSnapshot, orderBy } from "firebase/firestore"; 
 import { db } from "./firebase";
 import ItemComponent from "./Components/ItemComponent";
 
@@ -13,7 +13,7 @@ export default function Home() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, "items"));
+    const q = query(collection(db, "items"), orderBy("timestamp"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const itemsArr = [];
@@ -35,12 +35,15 @@ export default function Home() {
     const item = {
       name: newItem.name.trim(),
       quantity: newItem.quantity.trim(),
+      timestamp: new Date().toISOString()
     };
 
     await addDoc(collection(db, "items"), item);
 
     setNewItem({ name: "", quantity: "" });
   }
+
+  console.log();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

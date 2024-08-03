@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 const ItemComponent = ({ item }) => {
-    const [showInput, setShowInput] = useState(true);
+  const [showInput, setShowInput] = useState(true);
+  const [editedItem, setEditedItem] = useState({ name: item.name, quantity: item.quantity });
+
   // edit item in database
-    const editItem = async (id) => {
-        await updateDoc(doc(db, "items", id), {
-            name: "edited name",
-            quantity: "edited quantity",
-        });
-    }
+  const editItem = async (e) => {
+    e.preventDefault();
+    if (!editedItem.name || !editedItem.quantity) {
+        setEditedItem({ name: item.name, quantity: item.quantity });
+        return setShowInput(!showInput);
+    };
+
+    await updateDoc(doc(db, "items", item.id), {
+        name: editedItem.name,
+        quantity: editedItem.quantity,
+    });
+    
+
+    setShowInput(!showInput);
+  };
+
+
 
   // delete item from database
   const deleteItem = async (id) => {
@@ -22,22 +35,49 @@ const ItemComponent = ({ item }) => {
   return (
     <>
         <div className="bg-slate-950 rounded-lg grid grid-cols-6 grid-rows-0 gap-4 p-3">
-            <input 
-            className="col-span-3 bg-slate-950 font-bold rounded-lg" 
-            value={item.name} 
-            disabled={showInput}
-            />
-            <input 
-            className="col-start-4 bg-slate-950 font-bold rounded-lg" 
-            value={item.quantity}
-            disabled={showInput}
-            />
-            <button 
-            className="bg-green-500 rounded-lg text-white col-start-5"
-            onClick={() => setShowInput(!showInput)}
-            >
-                <FontAwesomeIcon icon={faPenToSquare} className="fas fa-pen-to=square"></FontAwesomeIcon>
-            </button>
+            {showInput ? (
+                <>
+                    <input 
+                    className="col-span-3 bg-slate-950 font-bold rounded-lg" 
+                    value={editedItem.name} 
+                    onChange={(e) => setEditedItem({ ...editedItem, quantity: e.target.value })}
+                    disabled={showInput}
+                    />
+                    <input 
+                    className="col-start-4 bg-slate-950 font-bold rounded-lg" 
+                    value={editedItem.quantity}
+                    onChange={(e) => setEditedItem({ ...editedItem, quantity: e.target.value })}
+                    disabled={showInput}
+                    />
+                    <button 
+                    className="bg-green-500 rounded-lg text-white col-start-5"
+                    onClick={() => setShowInput(!showInput)}
+                    >
+                        <FontAwesomeIcon icon={faPenToSquare} className="fas fa-pen-to=square"></FontAwesomeIcon>
+                    </button>
+                </>
+            ) : (
+                <>
+                <input 
+                className="col-span-3 bg-white font-bold rounded-lg text-black" 
+                value={editedItem.name} 
+                onChange={(e) => setEditedItem({ ...editedItem, quantity: e.target.value })}
+                disabled={showInput}
+                />
+                <input 
+                className="col-start-4 bg-white font-bold rounded-lg text-black" 
+                value={editedItem.quantity}
+                onChange={(e) => setEditedItem({ ...editedItem, quantity: e.target.value })}
+                disabled={showInput}
+                />
+                <button 
+                className="bg-green-500 rounded-lg text-white col-start-5"
+                onClick={editItem}
+                >
+                    <FontAwesomeIcon icon={faPenToSquare} className="fas fa-pen-to=square"></FontAwesomeIcon>
+                </button>
+                </>
+            )}
             <button 
             className="bg-red-500 rounded-lg text-white col-start-6"
             onClick={() => deleteItem(item.id)}

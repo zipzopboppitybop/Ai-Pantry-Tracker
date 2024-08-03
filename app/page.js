@@ -4,10 +4,9 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {  faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { collection, addDoc, doc, deleteDoc, query, onSnapshot } from "firebase/firestore"; 
+import { collection, addDoc, query, onSnapshot } from "firebase/firestore"; 
 import { db } from "./firebase";
+import ItemComponent from "./Components/ItemComponent";
 
 export default function Home() {
   // get items from database
@@ -41,11 +40,6 @@ export default function Home() {
     setNewItem({ name: "", quantity: "" });
   }
 
-  // delete item from database
-  const deleteItem = async (id) => {
-    await deleteDoc(doc(db, "items", id));
-  }
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-xl w-full items-center justify-between font-mono text-sm ">
@@ -74,19 +68,7 @@ export default function Home() {
             <ul>
               {items.map((item, id) => (
                 <li key={id} className="pb-2 px-5 text-lg">
-                  <div className="bg-slate-950 rounded-lg grid grid-cols-6 grid-rows-0 gap-4 p-3">
-                    <span className="col-span-3">{item.name}</span>
-                    <span className="col-start-4">{item.quantity}</span>
-                    <button className="bg-green-500 rounded-lg text-white col-start-5">
-                      <FontAwesomeIcon icon={faPenToSquare} className="fas fa-pen-to=square"></FontAwesomeIcon>
-                    </button>
-                    <button 
-                    className="bg-red-500 rounded-lg text-white col-start-6"
-                    onClick={() => deleteItem(item.id)}
-                    >
-                      <FontAwesomeIcon icon={faTrashCan} className="fas fa-trash-can"></FontAwesomeIcon>
-                    </button>
-                  </div>
+                  <ItemComponent item={item} />
                 </li>
               ))}
             </ul>

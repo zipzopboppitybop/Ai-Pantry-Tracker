@@ -6,21 +6,27 @@ config.autoAddCss = false;
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc, getDocs, QuerySnapshot, query, onSnapshot } from "firebase/firestore"; 
 import { db } from "./firebase";
 
 export default function Home() {
-  const [items, setItems] = useState([
-    { name: "Apples", quantity: "5" },
-    { name: "Oranges", quantity: "3" },
-    { name: "Bananas", quantity: "2" },
-    { name: "Milk", quantity: "1" },
-    { name: "Eggs", quantity: "12" },
-  ]);
-  
-  const [newItem, setNewItem] = useState({ name: "", quantity: "" });
+  // get items from database
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const q = query(collection(db, "items"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const itemsArr = [];
+      querySnapshot.forEach((doc) => {
+        itemsArr.push({ ...doc.data(), id: doc.id });
+      });
+      setItems(itemsArr);
+    });
+  }, []);
   
   // add item to database
+  const [newItem, setNewItem] = useState({ name: "", quantity: "" });
+
   const addItem = async (e) => {
     e.preventDefault();
     if (!newItem.name || !newItem.quantity) return;
@@ -34,6 +40,7 @@ export default function Home() {
 
     setNewItem({ name: "", quantity: "" });
   }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-xl w-full items-center justify-between font-mono text-sm ">

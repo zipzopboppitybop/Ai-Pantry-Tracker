@@ -23,6 +23,7 @@ const ItemComponent = ({ item }) => {
     
 
     setShowInput(!showInput);
+    setEditedItem({ name: item.name, quantity: item.quantity });
   };
 
 
@@ -39,19 +40,19 @@ const ItemComponent = ({ item }) => {
                 <>
                     <input 
                     className="col-span-3 bg-slate-950 font-bold rounded-lg" 
-                    value={editedItem.name} 
+                    value={item.name} 
                     onChange={(e) => setEditedItem({ ...editedItem, quantity: e.target.value })}
                     disabled={showInput}
                     />
                     <input 
                     className="col-start-4 bg-slate-950 font-bold rounded-lg" 
-                    value={editedItem.quantity}
+                    value={item.quantity}
                     onChange={(e) => setEditedItem({ ...editedItem, quantity: e.target.value })}
                     disabled={showInput}
                     />
                     <button 
                     className="bg-green-500 rounded-lg text-white col-start-5"
-                    onClick={() => setShowInput(!showInput)}
+                    onClick={() => {setShowInput(!showInput), setEditedItem({ name: item.name, quantity: item.quantity })}}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="fas fa-pen-to=square"></FontAwesomeIcon>
                     </button>
@@ -61,7 +62,7 @@ const ItemComponent = ({ item }) => {
                 <input 
                 className="col-span-3 bg-white font-bold rounded-lg text-black" 
                 value={editedItem.name} 
-                onChange={(e) => setEditedItem({ ...editedItem, quantity: e.target.value })}
+                onChange={(e) => setEditedItem({ ...editedItem, name: e.target.value })}
                 disabled={showInput}
                 />
                 <input 

@@ -6,7 +6,7 @@ config.autoAddCss = false;
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { collection, addDoc, getDocs, doc, deleteDoc, QuerySnapshot, query, onSnapshot } from "firebase/firestore"; 
+import { collection, addDoc, doc, deleteDoc, query, onSnapshot } from "firebase/firestore"; 
 import { db } from "./firebase";
 
 export default function Home() {
@@ -71,8 +71,8 @@ export default function Home() {
             </button>
           </form>
           <div className="my-0 ">
-            {items.map((item, id) => (
-              <ul>
+            <ul>
+              {items.map((item, id) => (
                 <li key={id} className="pb-2 px-5 text-lg">
                   <div className="bg-slate-950 rounded-lg grid grid-cols-6 grid-rows-0 gap-4 p-3">
                     <span className="col-span-3">{item.name}</span>
@@ -88,8 +88,8 @@ export default function Home() {
                     </button>
                   </div>
                 </li>
-              </ul>
               ))}
+            </ul>
           </div>
         </div>
       </div>

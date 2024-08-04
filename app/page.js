@@ -49,6 +49,9 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-xl w-full items-center justify-between font-mono text-sm ">
         <h1 className="text-5xl text-center">Ai Pantry Tracker</h1>
+        <div className="flex justify-center m-6">
+          <input className=" rounded-lg h-10 p-3 text-black justify-center" placeholder="Search for an item" />
+        </div>
         <div className="bg-gray-800 items-center rounded-lg mt-6 min-h-fit ">
           <form className="grid grid-cols-5 grid-rows-1 gap-4 p-5 m-0">
             <input 

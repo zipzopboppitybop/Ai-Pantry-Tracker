@@ -40,7 +40,7 @@ const ItemComponent = ({ item }) => {
                 <>
                     <input 
                     className="col-span-3 bg-slate-950 font-bold rounded-lg" 
-                    value={item.name} 
+                    value={item.name[0].toUpperCase() + item.name.slice(1).toLowerCase()} 
                     onChange={(e) => setEditedItem({ ...editedItem, quantity: e.target.value })}
                     disabled={showInput}
                     />

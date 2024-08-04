@@ -43,25 +43,23 @@ export default function Home() {
     setNewItem({ name: "", quantity: "" });
   }
 
-  console.log();
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-xl w-full items-center justify-between font-mono text-sm ">
         <h1 className="text-5xl text-center">Ai Pantry Tracker</h1>
-        <div className="flex justify-center m-6">
-          <input className=" rounded-lg h-10 p-3 text-black justify-center" placeholder="Search for an item" />
+        <div className="flex justify-center">
+          <input className=" rounded-lg h-10 p-3 w-96 mt-5 text-black justify-center text-lg" placeholder="Search for an item" />
         </div>
         <div className="bg-gray-800 items-center rounded-lg mt-6 min-h-fit ">
           <form className="grid grid-cols-5 grid-rows-1 gap-4 p-5 m-0">
             <input 
-            className="col-span-2 h-10 font-bold rounded-lg p-3 text-black" 
+            className="col-span-2 h-10 font-bold rounded-lg p-3 text-black text-lg" 
             placeholder="Item Name"
             value={newItem.name}
             onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
             />
             <input 
-            className="col-span-2 col-start-3 font-bold rounded-lg text-black h-10 p-3"
+            className="col-span-2 col-start-3 font-bold rounded-lg text-black h-10 p-3 text-lg"
             placeholder="Quantity" 
             value={newItem.quantity}
             onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}

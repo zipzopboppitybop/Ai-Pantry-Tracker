@@ -11,6 +11,7 @@ import ItemComponent from "./Components/ItemComponent";
 export default function Home() {
   // get items from database
   const [items, setItems] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const q = query(collection(db, "items"), orderBy("timestamp"));
@@ -48,7 +49,11 @@ export default function Home() {
       <div className="z-10 max-w-xl w-full items-center justify-between font-mono text-sm ">
         <h1 className="text-5xl text-center">Ai Pantry Tracker</h1>
         <div className="flex justify-center">
-          <input className=" rounded-lg h-10 p-3 w-96 mt-5 text-black justify-center text-lg" placeholder="Search for an item" />
+          <input 
+          className=" rounded-lg h-10 p-3 w-96 mt-5 text-black justify-center text-lg" placeholder="Search for an item"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)} 
+          />
         </div>
         <div className="bg-gray-800 items-center rounded-lg mt-6 min-h-fit ">
           <form className="grid grid-cols-5 grid-rows-1 gap-4 p-5 m-0">
@@ -72,11 +77,23 @@ export default function Home() {
           </form>
           <div className="my-0 ">
             <ul>
-              {items.map((item, id) => (
-                <li key={id} className="pb-2 px-5 text-lg">
-                  <ItemComponent item={item} />
-                </li>
-              ))}
+              {search ? (
+                <>
+                  {items.filter((item) => item.name.toLowerCase().includes(search.toLowerCase())).map((item, id) => (
+                    <li key={id} className="pb-2 px-5 text-lg">
+                      <ItemComponent item={item} />
+                    </li>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {items.map((item, id) => (
+                    <li key={id} className="pb-2 px-5 text-lg">
+                      <ItemComponent item={item} />
+                    </li>
+                ))}
+                </>
+              )}
             </ul>
           </div>
         </div>
